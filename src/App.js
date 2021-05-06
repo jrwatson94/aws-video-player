@@ -44,8 +44,6 @@ const App = () => {
       setFileName(file.name)
       setVideoUrl(url);
       setLoading(false);
-
-
     } catch (err) {
       console.log(err);
     }
