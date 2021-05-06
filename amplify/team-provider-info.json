@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-videoplayer-dev-220802-authRole",
+      "UnauthRoleArn": "arn:aws:iam::505116507323:role/amplify-videoplayer-dev-220802-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::505116507323:role/amplify-videoplayer-dev-220802-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-videoplayer-dev-220802-deployment",
+      "UnauthRoleName": "amplify-videoplayer-dev-220802-unauthRole",
+      "StackName": "amplify-videoplayer-dev-220802",
+      "StackId": "arn:aws:cloudformation:us-east-1:505116507323:stack/amplify-videoplayer-dev-220802/e51d57a0-ae0f-11eb-85a2-0e1250125733",
+      "AmplifyAppId": "d2kkw1sq56winh"
+    },
+    "categories": {
+      "auth": {
+        "videoplayer286f53c8": {}
+      }
+    }
+  }
+}

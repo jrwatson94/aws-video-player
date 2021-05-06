@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "videoplayer286f53c8": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "storage": {
+    "videoplayer": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}
