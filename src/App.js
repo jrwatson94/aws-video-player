@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import './App.css';
 
 // Import Amplify and Storage
@@ -13,7 +13,14 @@ const App = () => {
   const [videoUrl, setVideoUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName]=useState(null);
+  const [videos, setVideos] = useState([]);
 
+
+  useEffect( async () => {
+    const vids = await Storage.list('')
+    setVideos(vids);
+    console.log(vids)
+  }, [fileName])
 
 
   const downloadUrl = async () => {
@@ -24,7 +31,6 @@ const App = () => {
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
-    console.log(file.name)
     try {
       setLoading(true);
       // Upload the file to s3 with private access level. 
@@ -34,17 +40,37 @@ const App = () => {
       });
       // Retrieve the uploaded file to display
       const url = await Storage.get(`${file.name}`)
+      console.log(url)
       setFileName(file.name)
       setVideoUrl(url);
       setLoading(false);
+
+
     } catch (err) {
       console.log(err);
     }
   }
+  
 
+  const displayVidLinks = () =>{
+    const clickHandler = async (key) => {
+      const url = await Storage.get(key);
+      setVideoUrl(url);
+      setFileName(key);
+
+    }
+    console.log(videos)
+    return videos.map(vid => {
+      return <a><li onClick={ () => clickHandler(vid.key)}>{vid.key}</li></a>
+    })
+  }
+  
   return (
     <div className="App">
       <h1>My Videos</h1>
+      <div id="vid-container">
+        {displayVidLinks()}
+      </div>
       <h1> Upload an Video </h1>
       {loading ? <h3>Uploading...</h3> : <input
         type="file" accept='video/*'
