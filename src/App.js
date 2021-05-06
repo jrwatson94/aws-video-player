@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import './App.css';
 
 // Import Amplify and Storage
@@ -10,27 +10,32 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
 const App = () => {
-  const [imageUrl, setImageUrl] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [fileName, setFileName]=useState(null);
+
+
 
   const downloadUrl = async () => {
     // Creates download url that expires in 5 minutes/ 300 seconds
-    const downloadUrl = await Storage.get('picture.jpg', { expires: 300 });
+    const downloadUrl = await Storage.get(`${fileName}`, { expires: 300 });
     window.location.href = downloadUrl
   }
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
+    console.log(file.name)
     try {
       setLoading(true);
       // Upload the file to s3 with private access level. 
-      await Storage.put('picture.jpg', file, {
+      await Storage.put(file.name, file, {
         level: 'public',
-        contentType: 'image/jpg'
+        contentType: 'video'
       });
       // Retrieve the uploaded file to display
-      const url = await Storage.get('picture.jpg')
-      setImageUrl(url);
+      const url = await Storage.get(`${file.name}`)
+      setFileName(file.name)
+      setVideoUrl(url);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -39,13 +44,15 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1> Upload an Image </h1>
+      <h1>My Videos</h1>
+      <h1> Upload an Video </h1>
       {loading ? <h3>Uploading...</h3> : <input
-        type="file" accept='image/jpg'
+        type="file" accept='video/*'
         onChange={(evt) => handleChange(evt)}
       />}
+      <br></br>
       <div>
-        {imageUrl ? <img style={{ width: "30rem" }} src={imageUrl} /> : <span />}
+        {videoUrl ? <video controls type="video/mp4" style={{ width: "30rem" }} src={videoUrl} /> : <span />}
       </div>
       <div>
         <h2>Download URL?</h2>
